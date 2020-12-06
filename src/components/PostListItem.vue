@@ -16,21 +16,19 @@
       </div>
     </div>
 
-    <div
-      class="post-date text-faded"
-      :title="post.publishedAt | humanFriendlyDate"
-    >
-      {{ post.publishedAt | diffForHumans }}
+    <div class="post-date text-faded">
+      <AppDate :timestamp="post.publishedAt" />
     </div>
   </div>
 </template>
 
 <script>
 import sourceData from '@/data'
-// moment is very large due to included locale utilities, if you do not need them it is better to use
-// date fns or moment-mini
-import moment from 'moment'
+import AppDate from './AppDate'
 export default {
+  components: {
+    AppDate
+  },
   props: {
     post: {
       required: true,
@@ -43,14 +41,6 @@ export default {
     },
     userPostsCount() {
       return Object.keys(this.user.posts).length
-    }
-  },
-  filters: {
-    humanFriendlyDate(date) {
-      return moment.unix(date).format('MMMM Do YYYY, h:mm:ss a')
-    },
-    diffForHumans(date) {
-      return moment.unix(date).fromNow()
     }
   }
 }
