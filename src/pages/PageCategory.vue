@@ -7,7 +7,7 @@
 
 <script>
 import CategoryListItem from '@/components/CategoryListItem'
-import sourceData from '@/data'
+
 export default {
   components: {
     CategoryListItem
@@ -20,10 +20,10 @@ export default {
   },
   computed: {
     category() {
-      return sourceData.categories[this.id]
+      return this.$store.state.categories[this.id]
     },
     forums() {
-      return Object.values(sourceData.forums).filter(
+      return Object.values(this.$store.state.forums).filter(
         (thread) => thread.categoryId === this.id
       )
     }
