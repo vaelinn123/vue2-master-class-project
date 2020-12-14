@@ -4,5 +4,27 @@ import sourceData from '@/data'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: sourceData
+  state: sourceData,
+  actions: {
+    createPost({ commit }, post) {
+      const postId = 'greatPost' + Math.random()
+      post['.key'] = postId
+      commit('setPost', { post, postId })
+      commit('appendPostToThread', { threadId: post.threadId, postId })
+      commit('appendPostToUser', { userId: post.userId, postId })
+    }
+  },
+  mutations: {
+    setPost(state, { post, postId }) {
+      Vue.set(state.posts, postId, post)
+    },
+    appendPostToThread(state, { postId, threadId }) {
+      const thread = state.threads[threadId]
+      Vue.set(thread.posts, postId, postId)
+    },
+    appendPostToUser(state, { postId, userId }) {
+      const user = state.users[userId]
+      Vue.set(user.posts, postId, postId)
+    }
+  }
 })
