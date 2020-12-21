@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/PageHome'
+import ThreadCreate from '@/pages/PageThreadCreate'
 import ThreadShow from '@/pages/PageThreadShow'
 import NotFound from '@/pages/PageNotFound'
 import Profile from '@/pages/PageProfile'
@@ -26,6 +27,13 @@ export default new Router({
       path: '/forum/:id',
       name: 'Forum',
       component: Forum,
+      props: true
+    },
+    {
+      // important that this comes before thread/:id or the app tries to load thread/create using create as the id. Ordering is top to bottom
+      path: '/thread/create',
+      name: 'ThreadCreate',
+      component: ThreadCreate,
       props: true
     },
     {

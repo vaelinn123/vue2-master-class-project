@@ -20,7 +20,7 @@ export default new Vuex.Store({
       commit('appendPostToThread', { threadId: post.threadId, postId })
       commit('appendPostToUser', { userId: state.authId, postId })
     },
-    creasteThread({ state, commit, dispatch }, { text, title, forumId }) {
+    createThread({ state, commit, dispatch }, { text, title, forumId }) {
       const threadId = 'greatThread' + Math.random()
       const userId = state.authId
       const publishedAt = Math.floor(Date.now() / 1000)
