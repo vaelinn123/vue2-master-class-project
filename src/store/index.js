@@ -40,6 +40,15 @@ export default new Vuex.Store({
     },
     updateUser({ commit }, user) {
       commit('setUser', { userId: user['.key'], user })
+    },
+    async updateThread({ state, commit }, { title, text, id }) {
+      const thread = state.threads[id]
+      const post = state.posts[thread.firstPostId]
+      const newThread = { ...thread, title }
+      const newPost = { ...post, text }
+      commit('setThread', { thread: newThread, threadId: id })
+      commit('setPost', { post: newPost, postId: thread.firstPostId })
+      return newThread
     }
   },
   mutations: {
