@@ -31,7 +31,7 @@ export default new Router({
     },
     {
       // important that this comes before thread/:id or the app tries to load thread/create using create as the id. Ordering is top to bottom
-      path: '/thread/create',
+      path: '/thread/create/:forumId',
       name: 'ThreadCreate',
       component: ThreadCreate,
       props: true
