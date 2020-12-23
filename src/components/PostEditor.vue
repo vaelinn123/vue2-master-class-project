@@ -19,24 +19,45 @@
 export default {
   props: {
     threadId: {
-      required: true
+      required: false
+    },
+    post: {
+      type: Object
+    }
+  },
+  computed: {
+    isUpdate() {
+      return !!this.post
     }
   },
   data() {
     return {
-      text: ''
+      text: this.post ? this.post.text : ''
     }
   },
   methods: {
-    save() {
+    async save() {
+      const post = await this.persist()
+      this.$emit('save', { post })
+    },
+    async create() {
       const post = {
         text: this.text,
         threadId: this.threadId
       }
       this.text = ''
 
-      this.$emit('save', { post })
-      this.$store.dispatch('createPost', post)
+      return this.$store.dispatch('createPost', post)
+    },
+    async update() {
+      const payload = {
+        id: this.post['.key'],
+        text: this.text
+      }
+      return this.$store.dispatch('updatePost', payload)
+    },
+    async persist() {
+      this.isUpdate ? await this.update() : await this.create()
     }
   }
 }
