@@ -34,18 +34,18 @@ export default {
   },
   methods: {
     async save({ title, text }) {
-      const thread = await this.$store.dispatch('updateThread', {
+      await this.$store.dispatch('updateThread', {
         id: this.id,
         title,
         text
       })
       this.$router.push({
         name: 'ThreadShow',
-        params: { id: thread['.key'] }
+        params: { id: this.id }
       })
     },
     cancel() {
-      this.$router.push({ name: 'Forum', params: { id: this.forum['.key'] } })
+      this.$router.push({ name: 'Forum', params: { id: this.id } })
     }
   }
 }
