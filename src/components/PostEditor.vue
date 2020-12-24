@@ -11,7 +11,12 @@
       ></textarea>
     </div>
     <div class="form-actions">
-      <button class="btn-blue">Submit post</button>
+      <button vi-f="isUpdate" @click.prevent="cancel" class="btn btn-ghost">
+        Cancel
+      </button>
+      <button class="btn-blue">
+        {{ isUpdate ? 'Update' : 'Submit post' }}
+      </button>
     </div>
   </form>
 </template>
@@ -39,6 +44,9 @@ export default {
     async save() {
       const post = await this.persist()
       this.$emit('save', { post })
+    },
+    cancel() {
+      this.$emit('cancel')
     },
     async create() {
       const post = {
