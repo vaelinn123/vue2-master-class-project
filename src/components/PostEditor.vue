@@ -27,7 +27,19 @@ export default {
       required: false
     },
     post: {
-      type: Object
+      type: Object,
+      validator: (obj) => {
+        const keyIsValid = typeof obj['.key'] === 'string'
+        const textIsValid = typeof obj.text === 'string'
+        const valid = keyIsValid && textIsValid
+        if (!keyIsValid) {
+          console.error('Invalid type for post key, must be a string')
+        }
+        if (!textIsValid) {
+          console.error('Invalid type for post text, must be a string')
+        }
+        return valid
+      }
     }
   },
   computed: {
