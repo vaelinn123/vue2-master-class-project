@@ -23,7 +23,9 @@ export default new Vuex.Store({
     },
     userPostsCount: state => id => countObjectProperties(state.users[id].posts),
     userThreadsCount: state => id =>
-      countObjectProperties(state.users[id].threads)
+      countObjectProperties(state.users[id].threads),
+    threadRepliesCount: state => id =>
+      countObjectProperties(state.threads[id].posts) - 1
   },
   actions: {
     async createPost({ commit, state }, post) {
