@@ -11,8 +11,8 @@
       >
     </h1>
     <p>
-      By <a href="#" class="link-unstyled">Robin</a>,
-      <AppDate :timestamp="thread.publishedAt" />.
+      By <a href="#" class="link-unstyled">{{ user.name }}</a
+      >, <AppDate :timestamp="thread.publishedAt" />.
       <span
         style="float: right; margin-top: 2px"
         class="hide-mobile text-faded text-small"
@@ -44,6 +44,9 @@ export default {
     },
     replyCount() {
       return this.$store.getters.threadRepliesCount(this.thread['.key'])
+    },
+    user() {
+      return this.$store.state.users[this.thread.userId]
     },
     contributorsCount() {
       const replies = Object.values(this.thread.posts)
