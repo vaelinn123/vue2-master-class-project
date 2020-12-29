@@ -5,8 +5,14 @@ import App from './App'
 import router from './router'
 import AppDate from '@/components/AppDate'
 import store from '@/store'
+import firebase from 'firebase'
+
 Vue.component('AppDate', AppDate)
 Vue.config.productionTip = false
+const firebaseConfig = process.env.FIREBASE_CONFIG
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig)
+firebase.analytics()
 
 /* eslint-disable no-new */
 new Vue({
