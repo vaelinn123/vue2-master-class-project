@@ -74,12 +74,14 @@ export default new Vuex.Store({
     async fetchPost({ dispatch }, { id }) {
       return dispatch('fetchResource', { resource: 'posts', id })
     },
+    async fetchPosts({ dispatch }, { ids }) {
+      return dispatch('fetchResources', { resource: 'posts', ids })
+    },
     async fetchUser({ dispatch }, { id }) {
       return dispatch('fetchResource', { resource: 'users', id })
     },
     async fetchResource({ state, commit }, { id, resource }) {
       return new Promise((resolve, reject) => {
-        // fetch user
         firebase
           .database()
           .ref(resource)
@@ -93,6 +95,11 @@ export default new Vuex.Store({
             resolve(state[resource][id])
           })
       })
+    },
+    fetchResources({ dispatch }, { ids, resource }) {
+      return Promise.all(
+        ids.map(id => dispatch('fetchResource', { id, resource }))
+      )
     },
     updateUser({ commit }, user) {
       commit('setUser', { userId: user['.key'], user })
