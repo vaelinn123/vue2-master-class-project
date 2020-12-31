@@ -77,6 +77,9 @@ export default new Vuex.Store({
     async fetchPosts({ dispatch }, { ids }) {
       return dispatch('fetchResources', { resource: 'posts', ids })
     },
+    async fetchForums({ dispatch }, { ids }) {
+      return dispatch('fetchResources', { resource: 'forums', ids })
+    },
     async fetchUser({ dispatch }, { id }) {
       return dispatch('fetchResource', { resource: 'users', id })
     },
@@ -93,6 +96,25 @@ export default new Vuex.Store({
               resource
             })
             resolve(state[resource][id])
+          })
+      })
+    },
+    fetchAllCategories({ state, commig }) {
+      return new Promise((resolve, reject) => {
+        firebase
+          .database()
+          .ref('categories')
+          .once('value', snapshot => {
+            const categoriesObject = snapshot.val()
+            Object.keys(categoriesObject).forEach(categoryId => {
+              const category = categoriesObject[categoryId]
+              this.commit('setItem', {
+                resource: 'categories',
+                id: categoryId,
+                item: category
+              })
+            })
+            resolve(Object.values(state.categories))
           })
       })
     },
