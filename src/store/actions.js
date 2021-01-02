@@ -155,10 +155,29 @@ export default {
   },
   async updateThread({ state, commit, dispatch }, { title, text, id }) {
     const thread = state.threads[id]
-    const newThread = { ...thread, title }
-    commit('setThread', { thread: newThread, threadId: id })
-    await dispatch('updatePost', { id: thread.firstPostId, text })
-    return newThread
+    const post = state.posts[thread.firstPostId]
+    const edited = { at: Math.floor(Date.now() / 1000), by: state.authId }
+
+    const updates = {}
+    updates[`posts/${thread.firstPostId}/text`] = text
+    updates[`posts/${thread.firstPostId}/edited`] = edited
+    updates[`threads/${id}/title`] = title
+    firebase
+      .database()
+      .ref()
+      .update(updates)
+      .then(() => {
+        commit('setThread', { thread: { ...thread, title }, threadId: id })
+        commit('setPost', {
+          postId: thread.firstPostId,
+          post: {
+            ...post,
+            text,
+            edited
+          }
+        })
+        return post
+      })
   },
   async updatePost({ state, commit }, { id, text }) {
     const post = state.posts[id]

@@ -7,7 +7,7 @@
         class="btn-green btn-small"
         tag="button"
       >
-        Edit ThreadList</router-link
+        Edit Thread</router-link
       >
     </h1>
     <p>
