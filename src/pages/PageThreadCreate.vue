@@ -44,7 +44,7 @@ export default {
     }
   },
   created() {
-    this.fetchForum({ id: this.id })
+    this.fetchForum({ id: this.forumId })
   }
 }
 </script>
