@@ -104,8 +104,6 @@ export default {
   fetchForums: ({ dispatch }, { ids }) =>
     dispatch('fetchResources', { resource: 'forums', ids }),
   fetchResource({ state, commit }, { id, resource }) {
-    console.log('FetchResource called with id : ', id)
-    console.log('FetchResource called with resource: ', resource)
     return new Promise((resolve, reject) => {
       firebase
         .database()
