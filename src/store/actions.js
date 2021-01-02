@@ -162,14 +162,24 @@ export default {
   },
   async updatePost({ state, commit }, { id, text }) {
     const post = state.posts[id]
-    commit('setPost', {
-      postId: id,
-      post: {
-        ...post,
-        text,
-        edited: { at: Math.floor(Date.now() / 1000), by: state.authid }
-      }
-    })
-    return post
+    const edited = { at: Math.floor(Date.now() / 1000), by: state.authId }
+
+    const updates = { text, edited }
+    firebase
+      .database()
+      .ref('posts')
+      .child(id)
+      .update(updates)
+      .then(() => {
+        commit('setPost', {
+          postId: id,
+          post: {
+            ...post,
+            text,
+            edited
+          }
+        })
+        return post
+      })
   }
 }
