@@ -1,5 +1,5 @@
 <template>
-  <div class="col-full push-top">
+  <div v-if="ready" class="col-full push-top">
     <h1>Welcome to the forum</h1>
     <CategoryList :categories="categories" />
   </div>
@@ -9,6 +9,11 @@
 import CategoryList from '@/components/CategoryList'
 import { mapActions } from 'vuex'
 export default {
+  data() {
+    return {
+      ready: false
+    }
+  },
   components: {
     CategoryList
   },
@@ -22,11 +27,15 @@ export default {
   },
   created() {
     this.fetchAllCategories().then((categories) => {
-      categories.forEach((category) =>
-        this.fetchForums({
-          ids: Object.keys(category.forums)
-        })
-      )
+      Promise.all(
+        categories.map((category) =>
+          this.fetchForums({
+            ids: Object.keys(category.forums)
+          })
+        )
+      ).then(() => {
+        this.ready = true
+      })
     })
   }
 }
