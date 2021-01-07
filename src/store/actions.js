@@ -89,6 +89,34 @@ export default {
         })
     })
   },
+  createUser({ state, commit }, { email, name, username, avatar = null }) {
+    return new Promise((resolve, reject) => {
+      const registeredAt = Math.floor(Date.now() / 1000)
+      const usernameLower = username.toLowerCase()
+      const emailLower = email.toLowerCase()
+      const user = {
+        name,
+        avatar,
+        registeredAt,
+        username,
+        usernameLower,
+        email: emailLower
+      }
+      const userId = firebase
+        .database()
+        .ref('users')
+        .push().key
+      firebase
+        .database()
+        .ref('users')
+        .child(userId)
+        .set(user)
+        .then(() => {
+          commit('setItem', { item: user, resource: 'users', id: userId })
+          resolve(state.users[userId])
+        })
+    })
+  },
   fetchThread: ({ dispatch }, { id }) =>
     dispatch('fetchResource', { resource: 'threads', id }),
   fetchPost: ({ dispatch }, { id }) =>
