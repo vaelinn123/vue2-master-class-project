@@ -89,12 +89,13 @@ export default {
         })
     })
   },
-  createUser({ state, commit }, { email, name, username, avatar = null }) {
+  createUser({ state, commit }, { id, email, name, username, avatar = null }) {
     return new Promise((resolve, reject) => {
       const registeredAt = Math.floor(Date.now() / 1000)
       const usernameLower = username.toLowerCase()
       const emailLower = email.toLowerCase()
       const user = {
+        id,
         name,
         avatar,
         registeredAt,
@@ -102,20 +103,35 @@ export default {
         usernameLower,
         email: emailLower
       }
-      const userId = firebase
-        .database()
-        .ref('users')
-        .push().key
+
       firebase
         .database()
         .ref('users')
-        .child(userId)
+        .child(id)
         .set(user)
         .then(() => {
-          commit('setItem', { item: user, resource: 'users', id: userId })
-          resolve(state.users[userId])
+          commit('setItem', { item: user, resource: 'users', id: id })
+          resolve(state.users[id])
         })
     })
+  },
+  registerUserWithEmailAndPassword(
+    { dispatch },
+    { email, name, username, password, avatar = null }
+  ) {
+    return firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        return dispatch('createUser', {
+          id: userCredential.user.uid,
+          email,
+          name,
+          username,
+          password,
+          avatar
+        })
+      })
   },
   fetchThread: ({ dispatch }, { id }) =>
     dispatch('fetchResource', { resource: 'threads', id }),
