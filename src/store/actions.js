@@ -133,6 +133,12 @@ export default {
         })
       })
   },
+  fetchAuthUser({ dispatch, commit }) {
+    const userId = firebase.auth().currentUser.uid
+    return dispatch('fetchUser', { id: userId }).then(() => {
+      commit('setAuthId', userId)
+    })
+  },
   fetchThread: ({ dispatch }, { id }) =>
     dispatch('fetchResource', { resource: 'threads', id }),
   fetchPost: ({ dispatch }, { id }) =>

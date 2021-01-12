@@ -14,6 +14,12 @@ const firebaseConfig = process.env.FIREBASE_CONFIG
 firebase.initializeApp(firebaseConfig)
 firebase.analytics()
 
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    store.dispatch('fetchAuthUser')
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
