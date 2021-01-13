@@ -14,28 +14,8 @@
     <!-- use .navbar-open to open nav -->
     <nav class="navbar">
       <ul v-if="user">
-        <!--<li class="navbar-item">-->
-        <!--<a href="index.html">Home</a>-->
-        <!--</li>-->
-        <!--<li class="navbar-item">-->
-        <!--<a href="category.html">Category</a>-->
-        <!--</li>-->
-        <!--<li class="navbar-item">-->
-        <!--<a href="forum.html">Forum</a>-->
-        <!--</li>-->
-        <!--<li class="navbar-item">-->
-        <!--<a href="thread.html">Thread</a>-->
-        <!--</li>-->
-        <!--&lt;!&ndash; Show these option only on mobile&ndash;&gt;-->
-        <!--<li class="navbar-item mobile-only">-->
-        <!--<a href="profile.html">My Profile</a>-->
-        <!--</li>-->
-        <!--<li class="navbar-item mobile-only">-->
-        <!--<a href="#">Logout</a>-->
-        <!--</li>-->
-
         <li class="navbar-user">
-          <router-link :to="{ name: 'Profile' }">
+          <a @click.prevent="userDropdownOpen = !userDropdownOpen">
             <img class="avatar-small" :src="user.avatar" alt="" />
             <span>
               {{ user.name }}
@@ -45,22 +25,23 @@
                 alt=""
               />
             </span>
-          </router-link>
+          </a>
 
           <!-- dropdown menu -->
           <!-- add class "active-drop" to show the dropdown -->
-          <div id="user-dropdown">
+          <div id="user-dropdown" :class="{ 'active-drop': userDropdownOpen }">
             <div class="triangle-drop"></div>
             <ul class="dropdown-menu">
               <li class="dropdown-menu-item">
-                <a href="profile.html">View profile</a>
+                <router-link :to="{ name: 'Profile' }"
+                  >View Profile
+                </router-link>
               </li>
-              <li class="dropdown-menu-item"><a href="#">Log out</a></li>
+              <li class="dropdown-menu-item">
+                <a @click.prevent="$store.dispatch('signOut')">Sign Out</a>
+              </li>
             </ul>
           </div>
-        </li>
-        <li class="navbar-item">
-          <a @click.prevent="$store.dispatch('signOut')">Sign Out</a>
         </li>
       </ul>
       <ul v-else>
@@ -78,6 +59,11 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
+  data() {
+    return {
+      userDropdownOpen: true
+    }
+  },
   computed: {
     ...mapGetters({ user: 'authUser' })
   }
