@@ -139,6 +139,15 @@ export default {
       commit('setAuthId', userId)
     })
   },
+  signInWithEmailAndPassword(context, { email, password }) {
+    return firebase.auth().signInWithEmailAndPassword(email, password)
+  },
+  signOut({ commit }) {
+    return firebase
+      .auth()
+      .signOut()
+      .then(() => commit('setAuthId', null))
+  },
   fetchThread: ({ dispatch }, { id }) =>
     dispatch('fetchResource', { resource: 'threads', id }),
   fetchPost: ({ dispatch }, { id }) =>
