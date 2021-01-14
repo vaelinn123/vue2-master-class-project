@@ -38,7 +38,7 @@
                 </router-link>
               </li>
               <li class="dropdown-menu-item">
-                <a @click.prevent="$store.dispatch('signOut')">Sign Out</a>
+                <a @click.prevent="signOut">Sign Out</a>
               </li>
             </ul>
           </div>
@@ -61,7 +61,14 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      userDropdownOpen: true
+      userDropdownOpen: false
+    }
+  },
+  methods: {
+    signOut() {
+      this.$store.dispatch('signOut').then(() => {
+        this.userDropdownOpen = false
+      })
     }
   },
   computed: {
