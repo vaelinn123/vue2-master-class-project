@@ -4,6 +4,7 @@
       Editing <i>{{ thread.title }}</i>
     </h1>
     <ThreadEditor
+      ref="editor"
       :title="thread.title"
       :text="text"
       @save="save"
@@ -22,6 +23,11 @@ export default {
   components: {
     ThreadEditor
   },
+  data() {
+    return {
+      saved: false
+    }
+  },
   props: {
     id: {
       type: String,
@@ -35,6 +41,13 @@ export default {
     text() {
       const post = this.$store.state.posts[this.thread.firstPostId]
       return post ? post.text : null
+    },
+    hasUnsavedChanges() {
+      return (
+        (this.$refs.editor.form.title !== this.thread.title ||
+          this.$refs.editor.form.text !== this.text) &&
+        !this.saved
+      )
     }
   },
   methods: {
@@ -45,13 +58,14 @@ export default {
         title,
         text
       })
+      this.saved = true
       this.$router.push({
         name: 'ThreadShow',
         params: { id: this.id }
       })
     },
     cancel() {
-      this.$router.push({ name: 'Forum', params: { id: this.id } })
+      this.$router.push({ name: 'ThreadShow', params: { id: this.id } })
     }
   },
   created() {
@@ -60,6 +74,20 @@ export default {
         this.asyncDataStatus_fetched()
       })
     )
+  },
+  beforeRouteLeave(to, from, next) {
+    if (this.hasUnsavedChanges) {
+      const confirmed = window.confirm(
+        'Are you sure you want to leave? Unsaved changes will be lost'
+      )
+      if (confirmed) {
+        next()
+      } else {
+        next(false)
+      }
+    } else {
+      next()
+    }
   }
 }
 </script>
