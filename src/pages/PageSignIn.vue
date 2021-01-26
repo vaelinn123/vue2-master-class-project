@@ -68,12 +68,12 @@ export default {
         .dispatch('signInWithGoogle')
         .then(() => this.successRedirect())
         .catch((error) => alert('🤷‍️' + error.message))
+    },
+    successRedirect() {
+      const redirectTo = this.$route.query.redirectTo || { name: 'Home' }
+      this.$router.push(redirectTo)
     }
   },
-  successRedirect() {
-    const redirectTo = this.$route.query.redirectTo || {name: "Home"}
-    this.$router.push(redirectTo)
-  }
   created() {
     this.$emit('ready')
   }
