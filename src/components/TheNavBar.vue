@@ -66,13 +66,13 @@ export default {
   },
   methods: {
     signOut() {
-      this.$store.dispatch('signOut').then(() => {
+      this.$store.dispatch('auth/signOut').then(() => {
         this.userDropdownOpen = false
       })
     }
   },
   computed: {
-    ...mapGetters({ user: 'authUser' })
+    ...mapGetters({ user: 'auth/authUser' })
   }
 }
 </script>

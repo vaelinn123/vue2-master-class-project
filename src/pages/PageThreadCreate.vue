@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     forum() {
-      return this.$store.state.forums[this.forumId]
+      return this.$store.state.forums.items[this.forumId]
     },
     hasUnsavedChanges() {
       return (
@@ -40,7 +40,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createThread', 'fetchForum']),
+    ...mapActions('threads', ['createThread']),
+    ...mapActions('forums', ['fetchForum']),
     async save({ title, text }) {
       const thread = await this.createThread({
         forumId: this.forum['.key'],

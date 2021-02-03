@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     category() {
-      return this.$store.state.categories[this.id]
+      return this.$store.state.categories.items[this.id]
     },
     forums() {
       return Object.values(this.$store.state.forums).filter(
@@ -32,7 +32,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchCategory', 'fetchForums'])
+    ...mapActions('categories', ['fetchCategory', 'fetchForums']),
+    ...mapActions('forums', ['fetchForums'])
   },
   created() {
     this.fetchCategory({ id: this.id }).then((category) => {
