@@ -43,7 +43,7 @@ export default {
         .then(user => {
           return dispatch(
             'users/createUser',
-            { id: user.uid, email, name, username, password, avatar },
+            { id: user.user.uid, email, name, username, password, avatar },
             { root: true }
           )
         })
